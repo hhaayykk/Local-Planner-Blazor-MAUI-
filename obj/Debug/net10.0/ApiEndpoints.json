@@ -1,0 +1,75 @@
+[
+  {
+    "ContainingType": "MyPlanner.Controllers.ActivityController",
+    "Method": "Delete",
+    "RelativePath": "api/Activity/Delete/{key}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "key",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyPlanner.Controllers.ActivityController",
+    "Method": "GetData",
+    "RelativePath": "api/Activity/GetData",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[MyPlanner.Models.Activity, MyPlanner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyPlanner.Controllers.ActivityController",
+    "Method": "Insert",
+    "RelativePath": "api/Activity/Insert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "activity",
+        "Type": "MyPlanner.Models.Activity",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyPlanner.Controllers.ActivityController",
+    "Method": "Update",
+    "RelativePath": "api/Activity/Update/{key}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "key",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "activity",
+        "Type": "MyPlanner.Models.Activity",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

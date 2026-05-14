@@ -1,0 +1,56 @@
+@using System.Collections.Generic
+
+<div class="activity-app">
+    <h2>My Activities</h2>
+    <div class="activity-input">
+        <input @bind="newActivity" @bind:event="oninput" placeholder="Add a new activity..." @onkeydown="HandleKeyDown" />
+        <button @onclick="AddActivity">Add</button>
+    </div>
+    <ul class="activity-list">
+        @foreach (var activity in activities)
+        {
+            <li class="@(activity.IsDone ? "done" : "")">
+                <span @onclick="() => ToggleDone(activity)">@activity.Title</span>
+                <button class="delete-btn" @onclick="() => DeleteActivity(activity)">✕</button>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    private string newActivity = string.Empty;
+    private List<ActivityItem> activities = new();
+
+    private void AddActivity()
+    {
+        if (!string.IsNullOrWhiteSpace(newActivity))
+        {
+            activities.Add(new ActivityItem { Title = newActivity });
+            newActivity = string.Empty;
+        }
+    }
+
+    private void DeleteActivity(ActivityItem activity)
+    {
+        activities.Remove(activity);
+    }
+
+    private void ToggleDone(ActivityItem activity)
+    {
+        activity.IsDone = !activity.IsDone;
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            AddActivity();
+        }
+    }
+
+    private class ActivityItem
+    {
+        public string Title { get; set; } = string.Empty;
+        public bool IsDone { get; set; }
+    }
+}

@@ -1,0 +1,41 @@
+﻿
+<h3>@Owner Activities</h3>
+
+<div class="main-content">
+    @if (ShowDeadlineFilter)
+    {
+        <DateRangeFilter Filter="filter" OnFilterChanged="HandleFilterChanged" />
+    }
+
+    @if (FilteredActivities == null || FilteredActivities.Count == 0)
+    {
+        <p>No activities available.</p>
+    }
+    else
+    {
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Deadline</th>
+                <th>Commands</th>
+            </tr>
+            @foreach (var activity in FilteredActivities)
+            {
+                <tr class="activity">
+                    <td>@activity.Id</td>
+                    <td>@activity.Name</td>
+                    <td>@activity.Description</td>
+                    <td>@activity.Status</td>
+                    <td>@activity.Deadline.ToShortDateString()</td>
+                    <td>
+                        <button @onclick="() => EditActivity(activity)">Edit</button>
+                        <button @onclick="() => DeleteActivity(activity)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</div>

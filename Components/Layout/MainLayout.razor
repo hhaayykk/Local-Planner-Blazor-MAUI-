@@ -1,0 +1,65 @@
+﻿@inherits LayoutComponentBase
+@implements IDisposable
+@using MyPlanner.Models
+@using MyPlanner.Services
+
+<div class="site-root">
+    <header class="site-toolbar">
+        <div class="site-toolbar__inner">
+            <span class="site-toolbar__title">@Loc.T("App_ShortTitle")</span>
+            <nav class="site-toolbar__nav" aria-label="@Loc.T("Nav_SiteAria")">
+                <a class="site-toolbar__link" href="/history">@Loc.T("Nav_History")</a>
+            </nav>
+        </div>
+    </header>
+    <main class="site-main" id="main-content">
+        @Body
+    </main>
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__cluster">
+                <div class="lang-switch lang-switch--footer"
+                     role="group"
+                     aria-label="@Loc.T("Lang_PickLanguage")">
+                    <button type="button"
+                            class="lang-switch__btn @(Loc.Current == UiLanguage.En ? "is-active" : null)"
+                            aria-pressed="@(Loc.Current == UiLanguage.En)"
+                            @onclick="@(() => SetLangAsync(UiLanguage.En))">
+                        @Loc.T("Lang_NameEn")
+                    </button>
+                    <button type="button"
+                            class="lang-switch__btn @(Loc.Current == UiLanguage.Ru ? "is-active" : null)"
+                            aria-pressed="@(Loc.Current == UiLanguage.Ru)"
+                            @onclick="@(() => SetLangAsync(UiLanguage.Ru))">
+                        @Loc.T("Lang_NameRu")
+                    </button>
+                    <button type="button"
+                            class="lang-switch__btn @(Loc.Current == UiLanguage.Hy ? "is-active" : null)"
+                            aria-pressed="@(Loc.Current == UiLanguage.Hy)"
+                            @onclick="@(() => SetLangAsync(UiLanguage.Hy))">
+                        @Loc.T("Lang_NameHy")
+                    </button>
+                </div>
+                <button type="button"
+                        class="theme-toggle @(Theme.IsDark ? "theme-toggle--dark" : null)"
+                        aria-label="@(Theme.IsDark ? Loc.T("Theme_AriaToLight") : Loc.T("Theme_AriaToDark"))"
+                        @onclick="ToggleThemeAsync">
+                    @if (Theme.IsDark)
+                    {
+                        <svg class="theme-toggle__icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                        </svg>
+                    }
+                    else
+                    {
+                        <svg class="theme-toggle__icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <circle cx="12" cy="12" r="4" fill="currentColor" />
+                            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                  d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                        </svg>
+                    }
+                </button>
+            </div>
+        </div>
+    </footer>
+</div>

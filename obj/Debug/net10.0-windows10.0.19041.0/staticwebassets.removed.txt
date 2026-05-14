@@ -1,0 +1,2 @@
+C:\Users\GBM\.nuget\packages\microsoft.aspnetcore.components.webview\10.0.0\staticwebassets\blazor.webview.js
+C:\Users\GBM\.nuget\packages\microsoft.aspnetcore.components.webview\10.0.0\staticwebassets\blazor.modules.json

@@ -1,0 +1,372 @@
+﻿@page "/"
+@implements IDisposable
+@using MyPlanner.Models
+@using MyPlanner.Services
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<div class="site-page">
+    <div class="page-intro page-intro--compact">
+        <div class="wrap wrap--intro">
+            <h1 class="visually-hidden">@Loc.T("Home_PageTitle")</h1>
+            <div class="intro-top">
+                <span class="intro-top__label">@Loc.T("Home_Activities")</span>
+                <span class="intro-top__total" aria-live="polite">@Loc.T("Home_TotalFmt", activities.Count)</span>
+            </div>
+
+            <div class="intro-search" role="search">
+                <label class="visually-hidden" for="intro-search-input">@Loc.T("Home_SearchAria")</label>
+
+                <input id="intro-search-input"
+                       class="intro-search__input"
+                       type="search"
+                       autocomplete="off"
+                       @bind="searchQuery"
+                       @bind:event="oninput"
+                       @bind:after="ResetListPaging"
+                       placeholder="@Loc.T("Home_SearchPlaceholder")"
+                       disabled="@busy" />
+
+                <button type="button"
+                        class="intro-search__filter @(filtersExpanded ? "is-on" : "")"
+                        disabled="@busy"
+                        aria-expanded="@(filtersExpanded ? "true" : "false")"
+                        aria-controls="intro-filters-panel"
+                        @onclick="ToggleFiltersExpanded"
+                        aria-label="@Loc.T("Home_FilterAria")">
+
+                    <i class="fas fa-filter" aria-hidden="true"></i>
+
+                </button>
+            </div>
+
+            <div class="intro-glance" aria-label="@Loc.T("Home_GlanceAria")">
+                <span class="intro-glance__date">@TodayLabel</span>
+                <span class="intro-glance__chip @(OverdueCount > 0 ? "intro-glance__chip--warn" : "")">@Loc.T("Home_OverdueFmt", OverdueCount)</span>
+                <span class="intro-glance__chip intro-glance__chip--muted">@Loc.T("Home_DoneFmt", DoneCount)</span>
+            </div>
+
+            @if (!string.IsNullOrEmpty(loadError))
+            {
+                <div class="msg msg--error msg--on-intro" role="alert">@Loc.T(loadError)</div>
+            }
+            @if (!string.IsNullOrEmpty(actionError))
+            {
+                <div class="msg msg--error msg--on-intro" role="status">@Loc.T(actionError)</div>
+            }
+        </div>
+    </div>
+
+    @if (filtersExpanded)
+    {
+        <div class="filter-overlay">
+            <button type="button" class="filter-overlay__backdrop" @onclick="CloseFiltersOverlay" aria-label="@Loc.T("Overlay_CloseFilters")"></button>
+            <div id="intro-filters-panel"
+                 class="filter-overlay__sheet"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="filter-overlay-title"
+                 @onclick:stopPropagation="true">
+                <div class="filter-overlay__head">
+                    <h2 id="filter-overlay-title" class="filter-overlay__title">@Loc.T("Overlay_FiltersTitle")</h2>
+                    <button type="button" class="filter-overlay__close" @onclick="CloseFiltersOverlay" aria-label="@Loc.T("Overlay_Close")">×</button>
+                </div>
+                <div class="filter-overlay__grid">
+                    <label class="filter-overlay__field">
+                        <span class="filter-overlay__label">@Loc.T("Overlay_DueFrom")</span>
+                        <input class="input" type="date" @bind="filterDueFrom" @bind:format="yyyy-MM-dd" @bind:after="ResetListPaging" disabled="@busy" />
+                    </label>
+                    <label class="filter-overlay__field">
+                        <span class="filter-overlay__label">@Loc.T("Overlay_DueTo")</span>
+                        <input class="input" type="date" @bind="filterDueTo" @bind:format="yyyy-MM-dd" @bind:after="ResetListPaging" disabled="@busy" />
+                    </label>
+                    <label class="filter-overlay__field filter-overlay__field--full">
+                        <span class="filter-overlay__label">@Loc.T("Overlay_Status")</span>
+                        <select class="input" @bind="filterStatusPick" @bind:after="ResetListPaging" disabled="@busy">
+                            <option value="Any">@Loc.T("Overlay_Any")</option>
+                            @foreach (var st in Enum.GetValues<ActivityStatus>())
+                            {
+                                <option value="@st.ToString()">@Loc.StatusLabel(st)</option>
+                            }
+                        </select>
+                    </label>
+                </div>
+                <button type="button" class="btn btn--link filter-overlay__clear" disabled="@busy" @onclick="ClearFilters">@Loc.T("Overlay_ClearFilters")</button>
+            </div>
+        </div>
+    }
+
+    <div class="wrap wrap--section">
+        @if (isLoading)
+        {
+            <div class="page-loading muted">@Loc.T("Common_Loading")</div>
+        }
+        else
+        {
+            <div class="grid-2">
+                <aside class="sidebar" aria-labelledby="new-activity-heading">
+                    <section class="card card--accent" id="new-activity-heading">
+                        <h2 class="card__title">@Loc.T("Form_NewActivity")</h2>
+                        <fieldset class="fieldset">
+                            <legend class="fieldset__legend">@Loc.T("Form_Basics")</legend>
+                            <label class="label" for="nf-title">@Loc.T("Form_TitleReq")</label>
+                            <input id="nf-title" class="input" @bind="newForm.Title" @bind:event="oninput" maxlength="100" disabled="@busy" />
+
+                            <label class="label" for="nf-tags">@Loc.T("Form_Tags")</label>
+                            <input id="nf-tags" class="input" @bind="newForm.Tags" @bind:event="oninput" maxlength="200" placeholder="@Loc.T("Form_TagsPlaceholder")" disabled="@busy" />
+
+                            <label class="label" for="nf-notes">@Loc.T("Form_NotesReq")</label>
+                            <textarea id="nf-notes" class="input input--textarea input--compact" rows="2" @bind="newForm.Notes" @bind:event="oninput" maxlength="1000" disabled="@busy"></textarea>
+                        </fieldset>
+
+                        <fieldset class="fieldset fieldset--schedule">
+                            <legend class="fieldset__legend">@Loc.T("Form_Schedule")</legend>
+                            <div class="schedule-stack">
+                                <div class="schedule-stack__item">
+                                    <label class="label" for="nf-start">@Loc.T("Form_StartDate")</label>
+                                    <input id="nf-start" type="date" class="input input--date" @bind="newForm.Start" @bind:format="yyyy-MM-dd" disabled="@busy" />
+                                </div>
+                                <div class="schedule-stack__item">
+                                    <label class="label" for="nf-due">@Loc.T("Form_Deadline")</label>
+                                    <input id="nf-due" type="date" class="input input--date" @bind="newForm.Due" @bind:format="yyyy-MM-dd" disabled="@busy" />
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="fieldset">
+                            <legend class="fieldset__legend">@Loc.T("Form_Status")</legend>
+                            <label class="label" for="nf-status">@Loc.T("Form_Status")</label>
+                            <select id="nf-status" class="input" @bind="newForm.Status" disabled="@busy">
+                                @foreach (var st in Enum.GetValues<ActivityStatus>())
+                                {
+                                    <option value="@((int)st)">@Loc.StatusLabel(st)</option>
+                                }
+                            </select>
+                        </fieldset>
+
+                        @if (!string.IsNullOrEmpty(addFormError))
+                        {
+                            <div class="msg msg--error" role="alert">@Loc.T(addFormError)</div>
+                        }
+
+                        <div class="btn-row">
+                            <button type="button" class="btn btn--primary" disabled="@busy" @onclick="AddActivityAsync">@(busy ? Loc.T("Form_Saving") : Loc.T("Form_SaveActivity"))</button>
+                            <button type="button" class="btn" disabled="@busy" @onclick="ResetNewForm">@Loc.T("Form_ResetForm")</button>
+                        </div>
+                    </section>
+                </aside>
+
+                <div class="main-col">
+                    <div class="planner-split">
+                        <section class="card card--main">
+                            @{
+                                var listSnap = GetListPagingSnapshot();
+                            }
+                            <h2 class="card__title">@Loc.T("List_TitleFmt", listSnap.Total)</h2>
+
+                            <div class="toolbar toolbar--tight">
+                                <div class="tabs" role="tablist" aria-label="@Loc.T("List_ScopeAria")">
+                                    <button type="button" role="tab" class="tabs__btn @(filter == ListFilter.All ? "is-on" : "")" disabled="@busy" @onclick="() => SetFilter(ListFilter.All)">@Loc.T("List_All")</button>
+                                    <button type="button" role="tab" class="tabs__btn @(filter == ListFilter.Active ? "is-on" : "")" disabled="@busy" @onclick="() => SetFilter(ListFilter.Active)">@Loc.T("List_Active")</button>
+                                    <button type="button" role="tab" class="tabs__btn @(filter == ListFilter.Done ? "is-on" : "")" disabled="@busy" @onclick="() => SetFilter(ListFilter.Done)">@Loc.T("List_Done")</button>
+                                </div>
+                                <div class="toolbar__right">
+                                    <button type="button" class="btn btn--link" disabled="@busy" @onclick="ClearFilters">@Loc.T("List_ClearFilters")</button>
+                                </div>
+                            </div>
+
+                            @if (listSnap.Total > 0)
+                            {
+                                <div class="list-panel">
+                                    <ul class="list">
+                                        @foreach (var activity in listSnap.Items)
+                                        {
+                                            var overdue = IsOverdue(activity);
+                                            var cancelled = activity.Status == ActivityStatus.Cancelled;
+                                            var done = activity.Status == ActivityStatus.Completed;
+                                            <li class="list__item @(done ? "is-done" : "") @(overdue ? "is-overdue" : "")">
+                                                <div class="list__row">
+                                                    @if (!cancelled)
+                                                    {
+                                                        <label class="chk">
+                                                            <input type="checkbox" checked="@done" disabled="@busy" @onchange="e => ToggleCompleteAsync(activity, (bool)(e.Value ?? false))" />
+                                                            <span class="chk__ui" aria-hidden="true"></span>
+                                                        </label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="chk-spacer" aria-hidden="true"></span>
+                                                    }
+                                                    <div class="list__body">
+                                                        <div class="list__head">
+                                                            <span class="list__name">@activity.Name</span>
+                                                        </div>
+                                                        @if (!string.IsNullOrWhiteSpace(activity.Tags))
+                                                        {
+                                                            <p class="list__line"><strong>@Loc.T("List_TagsLine")</strong> @activity.Tags</p>
+                                                        }
+                                                        @if (!string.IsNullOrWhiteSpace(activity.Description))
+                                                        {
+                                                            <p class="list__desc">@Truncate(activity.Description, 100)</p>
+                                                        }
+                                                        <p class="list__meta">
+                                                            @Loc.T("List_Due") @activity.Deadline.ToLocalTime().ToString("MMM d, yyyy", Loc.Culture)
+                                                            @* · @Loc.T("List_Added") @FormatRelative(activity.Created) *@
+                                                            @if (overdue)
+                                                            {
+                                                                <span class="warn">@Loc.T("List_Overdue")</span>
+                                                            }
+                                                        </p>
+                                                        <span class="tag @StatusPillClass(activity.Status)">@Loc.StatusLabel(activity.Status)</span>
+                                                    </div>
+                                                    <div class="list__actions">
+                                                        <button type="button" class="btn btn--sm" disabled="@busy" @onclick="() => StartEdit(activity)">@Loc.T("List_Edit")</button>
+                                                        <button type="button" class="btn btn--sm btn--danger" disabled="@busy" @onclick="() => DeleteActivityAsync(activity)">@Loc.T("List_Delete")</button>
+                                                    </div>
+                                                </div>
+                                                @if (editingId == activity.Id && editForm != null)
+                                                {
+                                                    <div class="editor">
+                                                        <label class="label">@Loc.T("List_EditorTitle")</label>
+                                                        <input class="input" @bind="editForm.Title" @bind:event="oninput" maxlength="100" disabled="@busy" />
+                                                        <label class="label">@Loc.T("Form_Tags")</label>
+                                                        <input class="input" @bind="editForm.Tags" @bind:event="oninput" maxlength="200" disabled="@busy" />
+                                                        <label class="label">@Loc.T("List_EditorNotes")</label>
+                                                        <textarea class="input input--textarea input--compact" rows="2" @bind="editForm.Notes" @bind:event="oninput" maxlength="1000" disabled="@busy"></textarea>
+                                                        <div class="row-2">
+                                                            <div>
+                                                                <label class="label">@Loc.T("List_EditorStart")</label>
+                                                                <input type="date" class="input" @bind="editForm.Start" @bind:format="yyyy-MM-dd" disabled="@busy" />
+                                                            </div>
+                                                            <div>
+                                                                <label class="label">@Loc.T("List_EditorDeadline")</label>
+                                                                <input type="date" class="input" @bind="editForm.Due" @bind:format="yyyy-MM-dd" disabled="@busy" />
+                                                            </div>
+                                                        </div>
+                                                        <label class="label">@Loc.T("List_EditorStatus")</label>
+                                                        <select class="input" @bind="editForm.Status" disabled="@busy">
+                                                            @foreach (var st in Enum.GetValues<ActivityStatus>())
+                                                            {
+                                                                <option value="@((int)st)">@Loc.StatusLabel(st)</option>
+                                                            }
+                                                        </select>
+                                                        @if (!string.IsNullOrEmpty(editError))
+                                                        {
+                                                            <div class="msg msg--error" role="alert">@Loc.T(editError)</div>
+                                                        }
+                                                        <div class="btn-row">
+                                                            <button type="button" class="btn btn--primary" disabled="@busy" @onclick="SaveEditAsync">@Loc.T("List_Save")</button>
+                                                            <button type="button" class="btn" disabled="@busy" @onclick="CancelEdit">@Loc.T("List_Cancel")</button>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                    @if (listSnap.TotalPages > 1)
+                                    {
+                                        <nav class="list-pagination" aria-label="@Loc.T("Pg_AriaNav")">
+                                            <button type="button" class="btn btn--sm list-pagination__btn" disabled="@(busy || listSnap.Page <= 1)" @onclick="ListGoFirst" aria-label="@Loc.T("Pg_AriaFirst")">@Loc.T("Pg_First")</button>
+                                            <button type="button" class="btn btn--sm list-pagination__btn" disabled="@(busy || listSnap.Page <= 1)" @onclick="ListGoPrev" aria-label="@Loc.T("Pg_AriaPrev")">@Loc.T("Pg_Prev")</button>
+                                            <span class="list-pagination__status" aria-current="page">@Loc.T("Pg_PageFmt", listSnap.Page, listSnap.TotalPages)</span>
+                                            <button type="button" class="btn btn--sm list-pagination__btn" disabled="@(busy || listSnap.Page >= listSnap.TotalPages)" @onclick="ListGoNext" aria-label="@Loc.T("Pg_AriaNext")">@Loc.T("Pg_Next")</button>
+                                            <button type="button" class="btn btn--sm list-pagination__btn" disabled="@(busy || listSnap.Page >= listSnap.TotalPages)" @onclick="ListGoLast" aria-label="@Loc.T("Pg_AriaLast")">@Loc.T("Pg_Last")</button>
+                                        </nav>
+                                    }
+                                </div>
+                            }
+                            else if (activities.Any())
+                            {
+                                <p class="muted">@Loc.T("List_NoMatch")</p>
+                            }
+                            else
+                            {
+                                <p class="muted">@Loc.T("List_NoActivities")</p>
+                            }
+                        </section>
+
+                        <aside class="planner-widgets" aria-label="@Loc.T("Pulse_OverviewAria")">
+                            <section class="card card--pulse" aria-labelledby="pulse-status-title">
+                                <h3 id="pulse-status-title" class="card--pulse__title">@Loc.T("Pulse_StatusMix")</h3>
+                                @if (activities.Count == 0)
+                                {
+                                    <p class="muted muted--sm">@Loc.T("Pulse_StatusMixEmpty")</p>
+                                }
+                                else
+                                {
+                                    <div class="status-bar" role="img" aria-label="@Loc.T("Pulse_StatusBarAria")">
+                                        @foreach (var st in Enum.GetValues<ActivityStatus>())
+                                        {
+                                            var n = StatusCount(st);
+                                            if (n == 0) continue;
+                                            var pct = 100.0 * n / activities.Count;
+                                            <span class="status-bar__seg @StatusBarSegClass(st)" style="width: @(pct.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture))%"></span>
+                                        }
+                                    </div>
+                                    <ul class="pulse-list pulse-list--compact">
+                                        @foreach (var st in Enum.GetValues<ActivityStatus>())
+                                        {
+                                            var n = StatusCount(st);
+                                            if (n == 0) continue;
+                                            <li class="pulse-list__row">
+                                                <span class="tag @StatusPillClass(st)">@Loc.StatusLabel(st)</span>
+                                                <span class="pulse-list__n">@n</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </section>
+
+                            <section class="card card--pulse" aria-labelledby="pulse-upcoming-title">
+                                <h3 id="pulse-upcoming-title" class="card--pulse__title">@Loc.T("Pulse_Upcoming")</h3>
+                                @if (UpcomingSoon.Count == 0)
+                                {
+                                    <p class="muted muted--sm">@Loc.T("Pulse_UpcomingEmpty")</p>
+                                }
+                                else
+                                {
+                                    <ul class="pulse-list">
+                                        @foreach (var a in UpcomingSoon)
+                                        {
+                                            <li class="pulse-list__item">
+                                                <span class="pulse-list__name">@Truncate(a.Name, 36)</span>
+                                                <span class="pulse-list__due">@a.Deadline.ToLocalTime().ToString("MMM d", Loc.Culture)</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </section>
+
+                            <section class="card card--pulse" aria-labelledby="pulse-overdue-title">
+                                <h3 id="pulse-overdue-title" class="card--pulse__title">@Loc.T("Pulse_NeedsAttention")</h3>
+                                @if (OverdueCount == 0)
+                                {
+                                    <p class="muted muted--sm">@Loc.T("Pulse_NeedsEmpty")</p>
+                                }
+                                else
+                                {
+                                    <p class="pulse-alert">@Loc.T("Pulse_OverdueFmt", OverdueCount)</p>
+                                    <ul class="pulse-list">
+                                        @foreach (var a in OverdueList)
+                                        {
+                                            <li class="pulse-list__item pulse-list__item--warn">
+                                                <span class="pulse-list__name">@Truncate(a.Name, 36)</span>
+                                                <span class="pulse-list__due">@a.Deadline.ToLocalTime().ToString("MMM d", Loc.Culture)</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </section>
+
+                            <section class="card card--pulse card--pulse--tip" aria-labelledby="pulse-tip-title">
+                                <h3 id="pulse-tip-title" class="card--pulse__title">@Loc.T("Pulse_PlannerTip")</h3>
+                                <p class="pulse-tip">@Loc.T("Pulse_TipFull")</p>
+                            </section>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

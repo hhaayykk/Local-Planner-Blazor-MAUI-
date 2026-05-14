@@ -1,0 +1,383 @@
+html[data-theme="dark"] {
+    color-scheme: dark;
+}
+
+html[data-theme="dark"] body {
+    background: #0b1120;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] a,
+html[data-theme="dark"] .btn-link {
+    color: #5eead4;
+}
+
+html[data-theme="dark"] .site-root {
+    background: #0b1120;
+}
+
+html[data-theme="dark"] .site-toolbar {
+    background: rgba(15, 23, 42, 0.97);
+    border-bottom-color: #1e293b;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .site-toolbar__title {
+    color: #f1f5f9;
+}
+
+html[data-theme="dark"] .site-toolbar__link {
+    color: #5eead4;
+}
+
+html[data-theme="dark"] .site-toolbar__link:hover {
+    background: rgba(45, 212, 191, 0.12);
+}
+
+html[data-theme="dark"] .site-main {
+    scrollbar-color: #334155 #0f172a;
+}
+
+html[data-theme="dark"] .site-footer {
+    background: #0f172a;
+    border-top-color: #1e293b;
+}
+
+html[data-theme="dark"] .site-footer__inner {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .lang-switch {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .lang-switch__btn {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .lang-switch__btn:hover {
+    background: #334155;
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .lang-switch__btn.is-active {
+    background: #0f172a;
+    color: #5eead4;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme="dark"] .theme-toggle {
+    background: #1e293b;
+    border-color: #334155;
+    color: #fde68a;
+}
+
+html[data-theme="dark"] .theme-toggle:hover {
+    background: #334155;
+    color: #fef9c3;
+}
+
+html[data-theme="dark"] .site-footer .theme-toggle.theme-toggle--dark {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .site-footer .theme-toggle.theme-toggle--dark:hover {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .site-page .page-intro--compact {
+    background: linear-gradient(165deg, #1e293b 0%, #0f172a 52%, #172554 100%);
+}
+
+html[data-theme="dark"] .intro-search__input:focus {
+    border-color: rgba(94, 234, 212, 0.75);
+    box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.25);
+}
+
+html[data-theme="dark"] .intro-search__filter.is-on {
+    background: rgba(15, 118, 110, 0.35);
+    border-color: rgba(94, 234, 212, 0.45);
+}
+
+html[data-theme="dark"] .card--accent {
+    border-color: rgba(45, 212, 191, 0.35);
+    background: linear-gradient(165deg, #0f172a 0%, #134e4a 38%, #1e293b 100%);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .fieldset__legend {
+    color: #5eead4;
+    letter-spacing: 0.06em;
+}
+
+html[data-theme="dark"] .input:focus {
+    border-color: #2dd4bf;
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.22);
+}
+
+html[data-theme="dark"] .btn--link {
+    color: #5eead4;
+}
+
+html[data-theme="dark"] .btn--link:hover:not(:disabled) {
+    color: #99f6e4;
+}
+
+html[data-theme="dark"] .btn--primary {
+    background: linear-gradient(135deg, #0f766e, #0d9488);
+    border: 1px solid rgba(248, 250, 252, 0.42);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 2px 10px rgba(0, 0, 0, 0.35);
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .btn--primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #115e59, #0f766e);
+    border-color: rgba(248, 250, 252, 0.58);
+}
+
+html[data-theme="dark"] .btn--primary:disabled {
+    background: linear-gradient(135deg, #0f766e, #0d9488);
+    border: 1px solid rgba(248, 250, 252, 0.22);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    color: #f8fafc;
+    opacity: 0.55;
+}
+
+html[data-theme="dark"] .tabs__btn.is-on {
+    background: #0f172a;
+    color: #5eead4;
+    box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.25), 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .tag--status-open {
+    background: rgba(30, 58, 138, 0.65);
+    color: #bfdbfe;
+}
+
+html[data-theme="dark"] .tag--status-progress {
+    background: rgba(15, 118, 110, 0.35);
+    color: #99f6e4;
+}
+
+html[data-theme="dark"] .card--pulse--tip {
+    background: linear-gradient(165deg, #0f172a 0%, #1e293b 100%);
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .intro-search__input {
+    background: rgba(15, 23, 42, 0.45);
+    border-color: rgba(148, 163, 184, 0.35);
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .intro-search__filter {
+    background: rgba(15, 23, 42, 0.35);
+    border-color: rgba(148, 163, 184, 0.35);
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .intro-glance__chip {
+    background: rgba(15, 23, 42, 0.4);
+    border-color: rgba(148, 163, 184, 0.3);
+}
+
+html[data-theme="dark"] .card {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .card__title {
+    color: #f1f5f9;
+}
+
+html[data-theme="dark"] .label {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .input {
+    background: #0f172a;
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .btn {
+    background: #1e293b;
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .btn:hover:not(:disabled) {
+    background: #334155;
+    border-color: #64748b;
+}
+
+html[data-theme="dark"] .toolbar,
+html[data-theme="dark"] .toolbar--tight {
+    border-bottom-color: #334155;
+}
+
+html[data-theme="dark"] .tabs {
+    background: #0f172a;
+}
+
+html[data-theme="dark"] .tabs__btn {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .list__item {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .list__item.is-done {
+    background: #0f172a;
+    opacity: 0.85;
+}
+
+html[data-theme="dark"] .list__item.is-overdue:not(.is-done) {
+    border-color: #7f1d1d;
+    background: linear-gradient(90deg, #450a0a 0%, #1e293b 45%);
+}
+
+html[data-theme="dark"] .list__name {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .list__line,
+html[data-theme="dark"] .list__desc,
+html[data-theme="dark"] .list__meta {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .muted {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .card--pulse__title {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .status-bar {
+    background: #334155;
+}
+
+html[data-theme="dark"] .pulse-list__name {
+    color: #cbd5e1;
+}
+
+html[data-theme="dark"] .status-bar__seg--progress {
+    background: #2dd4bf;
+}
+
+html[data-theme="dark"] .pulse-list__n {
+    color: #f1f5f9;
+}
+
+html[data-theme="dark"] .filter-overlay__backdrop {
+    background: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme="dark"] .filter-overlay__sheet {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .filter-overlay__title {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .filter-overlay__label {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .filter-overlay__close {
+    background: #334155;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .list-pagination {
+    border-top-color: #334155;
+}
+
+html[data-theme="dark"] .list-pagination__status {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .editor {
+    border-top-color: #475569;
+}
+
+html[data-theme="dark"] .chk__ui {
+    background: #0f172a;
+    border-color: #64748b;
+}
+
+html[data-theme="dark"] .chk input:checked + .chk__ui {
+    background: linear-gradient(135deg, #0f766e, #14b8a6);
+    border-color: #2dd4bf;
+    box-shadow: inset 0 0 0 2px #0f172a;
+}
+
+html[data-theme="dark"] .msg--error {
+    color: #fca5a5;
+}
+
+html[data-theme="dark"] .msg--on-intro {
+    color: #fecaca;
+}
+
+html[data-theme="dark"] .hist-title {
+    color: #f8fafc;
+}
+
+html[data-theme="dark"] .hist-lead,
+html[data-theme="dark"] .hist-muted {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .hist-item {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+html[data-theme="dark"] .hist-item__name {
+    color: #f1f5f9;
+}
+
+html[data-theme="dark"] .hist-item__line,
+html[data-theme="dark"] .hist-item__desc {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .hist-item__meta {
+    color: #64748b;
+}
+
+html[data-theme="dark"] .hist-tag--open {
+    background: rgba(30, 58, 138, 0.65);
+    color: #bfdbfe;
+}
+
+html[data-theme="dark"] .hist-tag--progress {
+    background: rgba(15, 118, 110, 0.35);
+    color: #99f6e4;
+}
+
+html[data-theme="dark"] .hist-btn {
+    background: #1e293b;
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+html[data-theme="dark"] .hist-confirm-hint {
+    color: #94a3b8;
+}
+
+html[data-theme="dark"] .hist-msg--error {
+    color: #fca5a5;
+}

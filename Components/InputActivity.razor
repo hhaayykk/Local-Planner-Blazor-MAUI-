@@ -1,0 +1,43 @@
+﻿@using MyPlanner.Models
+<h3>InputActivity</h3>
+
+<EditForm Model="CurrentActivity"
+    OnValidSubmit="HandleValidSubmit" 
+>
+
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <ValidationMessage For="()=> CurrentActivity.Id" />
+    <InputNumber @bind-Value="@CurrentActivity.Id" disabled></InputNumber>
+
+    <InputText @bind-Value="@CurrentActivity.Name"></InputText>
+
+    <InputDate @bind-Value="@CurrentActivity.Created" TValue="DateTime"></InputDate>
+
+    <InputDate @bind-Value="@CurrentActivity.Deadline" TValue="DateTime"></InputDate>
+
+    <InputTextArea @bind-Value="@CurrentActivity.Description"></InputTextArea>
+
+    <InputSelect @bind-Value="@CurrentActivity.Status">
+        @foreach (var status in Enum.GetValues<ActivityStatus>())
+        {
+            <option value="@status">@status</option>
+        }
+    </InputSelect>
+
+    <button type="submit">Save</button>
+
+    <ValidationSummary />
+</EditForm>
+
+@code {
+    [Parameter]
+    public Activity CurrentActivity { get; set; }
+    [Parameter]
+    public EventCallback<Activity> OnActivitySaved { get; set; }
+
+    private void HandleValidSubmit(EditContext args)
+    {
+        OnActivitySaved.InvokeAsync(CurrentActivity);
+    }
+}

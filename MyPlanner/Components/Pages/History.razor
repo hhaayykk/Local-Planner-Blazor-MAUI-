@@ -1,0 +1,76 @@
+@page "/history"
+@using MyPlanner.Models
+@using MyPlanner.Services
+
+<div class="hist-page">
+    <div class="hist-wrap">
+        <header class="hist-head">
+            <h1 class="hist-title">@Loc.T("Hist_Title")</h1>
+            <p class="hist-lead">@Loc.T("Hist_Lead")</p>
+            <div class="hist-toolbar">
+                <a class="hist-back" href="/">@Loc.T("Hist_Back")</a>
+                @if (!isLoading && entries.Count > 0)
+                {
+                    @if (!clearConfirm)
+                    {
+                        <button type="button"
+                                class="hist-btn hist-btn--danger"
+                                disabled="@busy"
+                                @onclick="BeginClearConfirm">
+                            @Loc.T("Hist_Clear")
+                        </button>
+                    }
+                    else
+                    {
+                        <span class="hist-confirm-hint">@Loc.T("Hist_ClearConfirm")</span>
+                        <button type="button" class="hist-btn hist-btn--danger" disabled="@busy" @onclick="ConfirmClearAsync">@Loc.T("Hist_ClearYes")</button>
+                        <button type="button" class="hist-btn" disabled="@busy" @onclick="CancelClearConfirm">@Loc.T("List_Cancel")</button>
+                    }
+                }
+            </div>
+        </header>
+
+        @if (!string.IsNullOrEmpty(loadError))
+        {
+            <div class="hist-msg hist-msg--error" role="alert">@Loc.T(loadError)</div>
+        }
+        @if (!string.IsNullOrEmpty(actionError))
+        {
+            <div class="hist-msg hist-msg--error" role="status">@Loc.T(actionError)</div>
+        }
+
+        @if (isLoading)
+        {
+            <p class="hist-muted">@Loc.T("Common_Loading")</p>
+        }
+        else if (entries.Count == 0)
+        {
+            <p class="hist-muted">@Loc.T("Hist_Empty")</p>
+        }
+        else
+        {
+            <ul class="hist-list">
+                @foreach (var row in entries)
+                {
+                    var a = row.Activity;
+                    <li class="hist-item">
+                        <div class="hist-item__top">
+                            <span class="hist-item__name">@a.Name</span>
+                            <span class="hist-tag @StatusClass(a.Status)">@Loc.StatusLabel(a.Status)</span>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(a.Tags))
+                        {
+                            <p class="hist-item__line"><strong>@Loc.T("List_TagsLine")</strong> @a.Tags</p>
+                        }
+                        <p class="hist-item__desc">@Truncate(a.Description, 160)</p>
+                        <p class="hist-item__meta">
+                            @Loc.T("List_Due") @a.Deadline.ToLocalTime().ToString("MMM d, yyyy", Loc.Culture)
+                            · @Loc.T("Hist_DeletedLabel") @FormatDeletedAt(row.DeletedAt)
+                            · @Loc.T("Hist_IdFmt", a.Id)
+                        </p>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>

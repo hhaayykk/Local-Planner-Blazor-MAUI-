@@ -1,0 +1,64 @@
+﻿.main-content {
+    background: #f9fafb;
+    margin: 24px;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: system-ui, Arial, sans-serif;
+}
+
+    .main-content h3 {
+        margin-bottom: 16px;
+        font-size: 20px;
+        color: #111;
+    }
+
+    .main-content table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+    }
+
+    .main-content th,
+    .main-content td {
+        padding: 10px;
+        border: 1px solid #e5e7eb;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    .main-content th {
+        background: #111827;
+        color: #fff;
+    }
+
+    .main-content tr:hover {
+        background: #f3f4f6;
+    }
+
+.activity.urgent {
+    background: #fff7ed;
+}
+
+.main-content button {
+    padding: 6px 10px;
+    margin-right: 6px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+    .main-content button:first-child {
+        background: #3b82f6;
+        color: white;
+    }
+
+    .main-content button:last-child {
+        background: #ef4444;
+        color: white;
+    }
+
+.main-content p {
+    text-align: center;
+    padding: 12px;
+    color: #666;
+}

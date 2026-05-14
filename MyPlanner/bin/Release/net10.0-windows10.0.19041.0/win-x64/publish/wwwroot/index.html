@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>MyPlanner</title>
+    <base href="/" />
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="theme-dark.css" />
+    <link rel="stylesheet" href="MyPlanner.styles.css" />
+    <link rel="icon" href="favicon.png" type="image/png" />
+</head>
+<body>
+    <div class="status-bar-safe-area"></div>
+    <div id="app">Loading...</div>
+    <div id="blazor-error-ui" data-nosnippet>
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+    <script>
+        (function () {
+            var t = localStorage.getItem('myplanner_ui_theme');
+            if (t !== 'dark' && t !== 'light') t = 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+        window.__myplanner = {
+            getLang: () => localStorage.getItem('myplanner_ui_lang'),
+            setLang: (v) => localStorage.setItem('myplanner_ui_lang', v || 'en'),
+            setHtmlLang: (v) => {
+                const code = v === 'hy' ? 'hy' : v === 'ru' ? 'ru' : 'en';
+                document.documentElement.lang = code;
+            },
+            getTheme: () => localStorage.getItem('myplanner_ui_theme') || 'light',
+            setTheme: (v) => {
+                v = v === 'dark' ? 'dark' : 'light';
+                localStorage.setItem('myplanner_ui_theme', v);
+                document.documentElement.setAttribute('data-theme', v);
+            }
+        };
+    </script>
+    <script src="_framework/blazor.webview.js" autostart="false"></script>
+</body>
+</html>

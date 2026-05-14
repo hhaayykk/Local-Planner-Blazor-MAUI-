@@ -1,0 +1,64 @@
+.main-content[b-zefje7e62h] {
+    background: #f9fafb;
+    margin: 24px;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: system-ui, Arial, sans-serif;
+}
+
+    .main-content h3[b-zefje7e62h] {
+        margin-bottom: 16px;
+        font-size: 20px;
+        color: #111;
+    }
+
+    .main-content table[b-zefje7e62h] {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+    }
+
+    .main-content th[b-zefje7e62h],
+    .main-content td[b-zefje7e62h] {
+        padding: 10px;
+        border: 1px solid #e5e7eb;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    .main-content th[b-zefje7e62h] {
+        background: #111827;
+        color: #fff;
+    }
+
+    .main-content tr:hover[b-zefje7e62h] {
+        background: #f3f4f6;
+    }
+
+.activity.urgent[b-zefje7e62h] {
+    background: #fff7ed;
+}
+
+.main-content button[b-zefje7e62h] {
+    padding: 6px 10px;
+    margin-right: 6px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+    .main-content button:first-child[b-zefje7e62h] {
+        background: #3b82f6;
+        color: white;
+    }
+
+    .main-content button:last-child[b-zefje7e62h] {
+        background: #ef4444;
+        color: white;
+    }
+
+.main-content p[b-zefje7e62h] {
+    text-align: center;
+    padding: 12px;
+    color: #666;
+}

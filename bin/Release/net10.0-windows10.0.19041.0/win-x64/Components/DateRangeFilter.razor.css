@@ -1,0 +1,48 @@
+﻿div {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+input {
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #f9fafb;
+    color: #111827;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #ffffff;
+}
+
+button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:first-of-type {
+    background: #3b82f6;
+    color: white;
+}
+
+button:first-of-type:hover {
+    background: #2563eb;
+}
+
+button:last-of-type {
+    background: #ef4444;
+    color: white;
+}
+
+button:last-of-type:hover {
+    background: #dc2626;
+}

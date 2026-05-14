@@ -1,0 +1,59 @@
+﻿@using MyPlanner.Models
+<InputDate TValue="DateTime?" Value="Start" ValueExpression="() => Start" ValueChanged="OnValueChanged"/>
+<InputDate TValue="DateTime?" Value="End" ValueExpression="() => End" ValueChanged="OnEndValueChanged"/>
+<button @onclick="OnApplyClick">Apply</button>
+<button @onclick="OnClearClick">Clear</button>
+
+@code {
+    [Parameter]
+    public DateRangeFilterModel? Filter { get; set; } 
+    [Parameter]
+    public EventCallback<DateRangeFilterModel> OnFilterChanged { get; set; }
+
+    private DateTime? Start { get; set; } = DateTime.Now;
+    private DateTime? End { get; set; } = DateTime.Now;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (Filter != null)
+        {
+            Start = Filter.StartDate;
+            End = Filter.EndDate;
+        }
+    }
+
+    private void OnApplyClick()
+    {
+        TriggerFilterChanged();
+    }
+    private void OnValueChanged(DateTime? newStartDate)
+    {
+        Start = newStartDate;
+    }
+
+    private void OnEndValueChanged(DateTime? newEndDate)
+    {
+        End = newEndDate;
+    }
+    private void OnClearClick()
+    {
+        Start = null;
+        End = null;
+        TriggerFilterChanged();
+    }
+
+    private void TriggerFilterChanged()
+    {
+        var newFilter = new DateRangeFilterModel
+        {
+            StartDate = Start,
+            EndDate = End
+        };
+        if (!newFilter.StartDate.HasValue && !newFilter.EndDate.HasValue)
+        {
+            newFilter = null;
+        }
+        OnFilterChanged.InvokeAsync(newFilter);
+    }
+}
