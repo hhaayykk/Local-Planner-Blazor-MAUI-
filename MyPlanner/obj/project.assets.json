@@ -38066,11 +38066,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\GBM\\Desktop\\MyPlanner\\MyPlanner\\MyPlanner.csproj",
+      "projectUniqueName": "C:\\Users\\GBM\\Desktop\\Local Planner (Blazor + MAUI)\\MyPlanner\\MyPlanner.csproj",
       "projectName": "MyPlanner",
-      "projectPath": "C:\\Users\\GBM\\Desktop\\MyPlanner\\MyPlanner\\MyPlanner.csproj",
+      "projectPath": "C:\\Users\\GBM\\Desktop\\Local Planner (Blazor + MAUI)\\MyPlanner\\MyPlanner.csproj",
       "packagesPath": "C:\\Users\\GBM\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\GBM\\Desktop\\MyPlanner\\MyPlanner\\obj\\",
+      "outputPath": "C:\\Users\\GBM\\Desktop\\Local Planner (Blazor + MAUI)\\MyPlanner\\obj\\",
       "projectStyle": "PackageReference",
       "crossTargeting": true,
       "fallbackFolders": [

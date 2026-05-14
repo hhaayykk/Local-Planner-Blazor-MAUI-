@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DT5JdqbJhQY=",
+  "dgSpecHash": "5MshWyXjNYw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\GBM\\Desktop\\MyPlanner\\MyPlanner\\MyPlanner.csproj",
+  "projectFilePath": "C:\\Users\\GBM\\Desktop\\Local Planner (Blazor + MAUI)\\MyPlanner\\MyPlanner.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\GBM\\.nuget\\packages\\googlegson\\2.13.1.1\\googlegson.2.13.1.1.nupkg.sha512",
     "C:\\Users\\GBM\\.nuget\\packages\\microsoft.aspnetcore.authorization\\10.0.0\\microsoft.aspnetcore.authorization.10.0.0.nupkg.sha512",
